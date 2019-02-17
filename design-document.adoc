@@ -1,0 +1,181 @@
+
+
+
+
+= TOM (Terminal document Object Model): Design Document
+
+The problem: When printing to `std::out` we sometimes want to format our output into nice looking layouts
+
+....
+##              Annual Earnings             ##
+----------------------------------------------
+01    Monday                        $12,000.00
+02    Tuesday                        $8,500.00
+03    Wednesday                        $300.00
+04    Thursday                      $10,300.00
+05    Saturday                           $0.00
+----------------------------------------------
+The wise trader these days will be sure to 
+hedge insolvent systemic risks. In the Asian 
+sector, always leverage deferred HELOCs. 
+Unsecured short positions: in arbitrage-free 
+sectors, plan to prepay them.
+....
+
+
+Traditionally this would need to be done by manually formatting strings in code, or using repeated `printf` calls. The paragraph of text would also need to be split across multiple calls of `print` to achieve the fixed column width that is presented here.
+
+The downside to the traditional method is that changes to layout are very difficult to make. For example simply changing the width of the output to be bigger or smaller will be non-trivial in most cases.
+
+To make this kind of printing easier we propose a library for creating a virtual terminal document that can be styled in a similar manor to the web stack DOM and stylesheet mechanism.
+
+== Using a Document Object Model (DOM) 
+
+The structure of the previous example could be broken down into three distinct elements: a heading, a table containing the financial data, and a paragraph of text. 
+
+    <HEADING>...
+    <TABLE>...
+    <PARAGRAPH>...
+
+The other stylized elements like the horizontal dashes and octothorpes to each side of the heading could be applied by _styling_.
+
+== Styling
+
+Styling will work as cascading styles much like the web counterpart: this will allow styles to be reused between print-outs, or between projects without needing to encode the style into the data itself.
+
+```css
+terminal {
+    width: 80ch;
+}
+
+h1 {
+    margin: auto;
+    text-align: center;
+    border-left-width: 2ch;
+    border-left-style: '##';
+    border-right-width: 2ch;
+    border-right-style: '##';
+}
+
+table {
+    width: 100%;
+    border-top-width: 1ch;
+    border-top-style: '-';
+    border-bottom-width: 1ch;
+    border-bottom-style: '-';
+}
+```
+
+////
+== Box-border model
+
+----
+╭───╮
+│ x │
+╰───╯
+----
+////
+
+== Sample Use (Java)
+
+```java
+Document document = new Document();
+document.push(new H1("Annual Earnings"));
+document.push(new Table());
+document.top().push(new Row("01", "Monday", 12000));
+...
+document.push("The wise trader these days will be sure to hedge insolvent systemic risks. In the Asian sector, always leverage deferred HELOCs. Unsecured short positions: in arbitrage-free 
+sectors, plan to prepay them.");
+
+Stylesheet stylesheet = new Stylesheet();
+stylesheet.push(H1.tag, new Style(...));
+stylesheet.push(Table.tag, new Style(...));
+stylesheet.push(Row.tag, new Style(...));
+stylesheet.push(Paragraph.tag, new Style(...));
+
+TOM tom = new TOM(document, stylesheet);
+tom.print(System.out);
+```
+
+== How Layout Would Work
+
+To layout this document the first step would be to determine the root width. If there is no style defined for the root the layout engine will either attempt to find the width of the terminal window or use a default.
+
+Let's assume the root width is 80ch.
+
+Next it will go down the stack of elements on the root and layout each one in order.
+
+The style for the `H1` element is retrieved and the width property is queried. The width is 100% which is a value _relative to_ the parent element. In this case the root is the parent element so we check the parent element and use 100% of its width property.
+
+`Absolute Properties`:: These properties resolve immediately. 
++
+....
+H1.width : 100ch  
+....
+
+`Relative Properties`:: These properties traverse _up_ the DOM to resolve.
++
+....
+H1.width : 100% 
+         -> 100% of H1.parent.width
+         -> 100% of 80ch
+         : 80ch
+....
+
+`Inferred Properties`:: These properties are resolved by the element itself:
++
+....
+H1.width : undefined
+         -> h1.content.length()
+         : 15ch
+....
+
+== Version 1 Goals
+
+We want to support the following properties:
+
+- `width`: { ch, % }
+- `border`
+- `margin`: { ch, auto }
+- `padding`: { ch }
+- `text-align`: {right, center, left}
+
+All elements in version one will behave like HTML `block` elements--wrapping to a newline after each element.
+
+We want to support the following elements:
+
+- Headings: `H1` through `H3`.
+- Paragraphs
+- Tables: `Table` and `Row`
+
+We will only implement direct element rules for style resolving. 
+
+- Direct rules are like this CSS rule `body {...}`. 
+- Nested rules like the CSS direct-child rule `div > p {...}` may be implemented in future versions.
+
+== Implementation Details
+
+All elements will inherit from the `Element` abtract class.
+
+Each element will be implemented as a tree-node with 1 parent and 0* children.
+
+Children will be stored using a data-structure that supports the `push`, and `top` operations, as well as read-only interation (without popping).
+
+Each element will have an `Inner Content` property which holds the text for the element. (For headings this would contain the heading text--e.g. Annual Earnings.)
+
+Each element will have properties (`width`, `border`, `margin`, etc.).
+
+Properties on elements can be asssigned to.
+
+Propeties defined on elements will not be overwritten by external styles.
+
+Properties will be `undefined` unless the property is set on the element.
+
+Undefined properties will be resolved using defaults if no absolute values can be determined by traversing up the TOM tree. 
+
+The output of `TOM::print` may print individual blocks as layout is resolved or stall until layout is 100% resolved.
+
+Each Element class will expose a unique `Tag` property.
+
+The `Tag` property will be used to determine how styles are applied to elements.
+
