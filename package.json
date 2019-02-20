@@ -1,0 +1,30 @@
+{
+  "name": "tom",
+  "version": "1.0.0",
+  "description": "Terinal DOM & CSS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacksoncougar/TOM.git"
+  },
+  "keywords": [
+    "terminal",
+    "printf",
+    "format",
+    "plaintext",
+    "style",
+    "dom"
+  ],
+  "author": "Jackson C. Wiebe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jacksoncougar/TOM/issues"
+  },
+  "homepage": "https://github.com/jacksoncougar/TOM#readme",
+  "devDependencies": {
+    "typescript": "^3.3.3"
+  }
+}
