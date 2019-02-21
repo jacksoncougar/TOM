@@ -10,7 +10,9 @@ import {
 
 console.log("Demo:");
 
-const tape = "┊....╵....┊....╵....┊....╵....┊....╵....┊....╵....┊....╵....┊....╵....┊....╵....┊";
+const tape =
+  "''''╵''''╵''''╵''''╵''''╵''''╵''''╵''''│" +
+  "''''╵''''╵''''╵''''╵''''╵''''╵''''╵''''│";
 
 console.log(tape);
 
@@ -22,7 +24,7 @@ document.children.push(
     content: "First",
     properties: new Properties({
       textAlign: TextAlign.right,
-      margin: new MarginBox({ top: 0, right: 5, bottom: 0, left: 0 })
+      margin: new MarginBox({ top: 0, right: 10, bottom: 0, left: 0 })
     })
   })
 );
@@ -30,14 +32,20 @@ document.children.push(
 document.children.push(
   new Element({
     content: "Second",
-    properties: new Properties({ textAlign: TextAlign.center })
+    properties: new Properties({
+      textAlign: TextAlign.center,
+      margin: new MarginBox({ top: 0, right: 10, bottom: 0, left: 10 })
+    })
   })
 );
 
 document.children.push(
   new Element({
     content: "Third",
-    properties: new Properties({ textAlign: TextAlign.left })
+    properties: new Properties({
+      textAlign: TextAlign.left,
+      margin: new MarginBox({ top: 0, right: 10, bottom: 0, left: 10 })
+    })
   })
 );
 

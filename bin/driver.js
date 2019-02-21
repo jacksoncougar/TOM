@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tom_1 = require("./tom");
 console.log("Demo:");
-const tape = "┊....╵....┊....╵....┊....╵....┊....╵....┊....╵....┊....╵....┊....╵....┊....╵....┊";
+const tape = "''''╵''''╵''''╵''''╵''''╵''''╵''''╵''''│" +
+    "''''╵''''╵''''╵''''╵''''╵''''╵''''╵''''│";
 console.log(tape);
 let document = new tom_1.Document();
 let tome = new tom_1.TOM(document);
@@ -10,16 +11,22 @@ document.children.push(new tom_1.Element({
     content: "First",
     properties: new tom_1.Properties({
         textAlign: tom_1.TextAlign.right,
-        margin: new tom_1.MarginBox({ top: 0, right: 5, bottom: 0, left: 0 })
+        margin: new tom_1.MarginBox({ top: 0, right: 10, bottom: 0, left: 0 })
     })
 }));
 document.children.push(new tom_1.Element({
     content: "Second",
-    properties: new tom_1.Properties({ textAlign: tom_1.TextAlign.center })
+    properties: new tom_1.Properties({
+        textAlign: tom_1.TextAlign.center,
+        margin: new tom_1.MarginBox({ top: 0, right: 10, bottom: 0, left: 10 })
+    })
 }));
 document.children.push(new tom_1.Element({
     content: "Third",
-    properties: new tom_1.Properties({ textAlign: tom_1.TextAlign.left })
+    properties: new tom_1.Properties({
+        textAlign: tom_1.TextAlign.left,
+        margin: new tom_1.MarginBox({ top: 0, right: 10, bottom: 0, left: 10 })
+    })
 }));
 tome.print();
 console.log(tape);

@@ -96,21 +96,28 @@ class TOM {
         let buffer = [];
         let margin = typescript_optional_1.Optional.ofNullable(e.properties.margin).orElse(new MarginBox());
         let margin_space = margin.left + margin.right;
-        let content_width = e.content.length + margin_space;
-        let width = e.properties.width || 0;
+        let content_width = e.content.length;
+        let display_width = typescript_optional_1.Optional.ofNullable(e.properties.width)
+            .map($ => $.valueOf())
+            .orElse(0) - margin_space;
         let content_start = {};
         content_start[TextAlign.left] = 0;
-        content_start[TextAlign.center] = (width.valueOf() - content_width) / 2;
-        content_start[TextAlign.right] = width.valueOf() - content_width;
+        content_start[TextAlign.center] =
+            display_width.valueOf() / 2 - content_width / 2;
+        content_start[TextAlign.right] = display_width.valueOf() - content_width;
         const align = typescript_optional_1.Optional.ofNullable(e.properties.textAlign);
         let amount = content_start[align.orElseGet(() => TextAlign.left)];
-        for (let fill = 0; fill < amount; fill++) {
-            buffer.push(" ");
-        }
+        buffer.push(this.fill(margin.left, "░"));
+        buffer.push(this.fill(amount, "▒"));
         buffer.push(e.content);
-        for (let fill = buffer.length; fill < width; fill++) {
-            buffer.push(" ");
-        }
+        buffer.push(this.fill(display_width.valueOf() - content_width - amount, "▒"));
+        buffer.push(this.fill(margin.right, "░"));
+        return buffer.join("");
+    }
+    fill(amount, value) {
+        let buffer = [];
+        while (--amount >= 0)
+            buffer.push(typescript_optional_1.Optional.ofNullable(value).orElse(" "));
         return buffer.join("");
     }
 }

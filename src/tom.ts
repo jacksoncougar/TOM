@@ -4,7 +4,7 @@ export class Properties {
   width: Unit | undefined;
   height: Unit | undefined;
   margin: MarginBox = new MarginBox();
-  boundary : Boundary = new Boundary();
+  boundary: Boundary = new Boundary();
   textAlign: TextAlign = TextAlign.left;
 
   constructor(init?: Partial<Properties>) {
@@ -98,7 +98,6 @@ export class TOM {
   }
 
   print(): void {
-
     this.layout(this.document);
 
     for (const e of this.document.children) {
@@ -113,28 +112,37 @@ export class TOM {
       new MarginBox()
     );
 
-    let margin_space = <number>margin.left + <number> margin.right
+    let margin_space = <number>margin.left + <number>margin.right;
 
-    let content_width = e.content.length + margin_space;
-    let width = e.properties.width || 0;
+    let content_width = e.content.length;
+    let display_width =
+      Optional.ofNullable(e.properties.width)
+        .map($ => $.valueOf())
+        .orElse(0) - margin_space;
 
     let content_start: { [key: string]: number } = {};
     content_start[TextAlign.left] = 0;
-    content_start[TextAlign.center] = (width.valueOf() - content_width) / 2;
-    content_start[TextAlign.right] = width.valueOf() - content_width;
+    content_start[TextAlign.center] =
+      display_width.valueOf() / 2 - content_width / 2;
+    content_start[TextAlign.right] = display_width.valueOf() - content_width;
 
     const align = Optional.ofNullable(e.properties.textAlign);
     let amount = content_start[align.orElseGet(() => TextAlign.left)];
 
-    for (let fill = 0; fill < amount; fill++) {
-      buffer.push(" ");
-    }
-
+    buffer.push(this.fill(<number>margin.left, "░"));
+    buffer.push(this.fill(amount, "▒"));
     buffer.push(e.content);
+    buffer.push(
+      this.fill(display_width.valueOf() - content_width - amount, "▒")
+    );
+    buffer.push(this.fill(<number>margin.right, "░"));
 
-    for (let fill = buffer.length; fill < width; fill++) {
-      buffer.push(" ");
-    }
+    return buffer.join("");
+  }
+
+  fill(amount: number, value?: string) {
+    let buffer = [];
+    while (--amount >= 0) buffer.push(Optional.ofNullable(value).orElse(" "));
 
     return buffer.join("");
   }
