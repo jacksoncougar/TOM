@@ -155,19 +155,19 @@ We will only implement direct element rules for style resolving.
 
 == Implementation Details
 
-All elements will inherit from the `Element` abtract class.
+All elements will inherit from the `Element` abstract class.
 
 Each element will be implemented as a tree-node with 1 parent and 0* children.
 
-Children will be stored using a data-structure that supports the `push`, and `top` operations, as well as read-only interation (without popping).
+Children will be stored using a data-structure that supports the `push`, and `top` operations, as well as read-only iteration (without popping).
 
 Each element will have an `Inner Content` property which holds the text for the element. (For headings this would contain the heading text--e.g. Annual Earnings.)
 
 Each element will have properties (`width`, `border`, `margin`, etc.).
 
-Properties on elements can be asssigned to.
+Properties on elements can be assigned to.
 
-Propeties defined on elements will not be overwritten by external styles.
+Properties defined on elements will not be overwritten by external styles.
 
 Properties will be `undefined` unless the property is set on the element.
 
@@ -178,4 +178,3 @@ The output of `TOM::print` may print individual blocks as layout is resolved or 
 Each Element class will expose a unique `Tag` property.
 
 The `Tag` property will be used to determine how styles are applied to elements.
-

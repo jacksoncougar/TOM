@@ -51,7 +51,14 @@ export enum TextAlign {
 }
 
 class Unit extends Number {}
-export class Percent extends Unit {}
+export class Percent extends Unit {
+
+  constructor(percent:number) {
+    super(percent)
+  }
+
+
+}
 export class Character extends Unit {}
 class Auto extends Boolean {}
 
@@ -122,10 +129,11 @@ export class TOM {
   }
 
   layout(e: Element): void {
-    this.pushDown(e.properties, e.children, "width");
-    this.pushDown(e.properties, e.children, "height");
 
-    e.properties.boundary.top;
+    if(e.properties.width instanceof Percent)
+    {
+      e.properties.width = e.parent && e.parent.properties.width ? e.parent.properties.width.valueOf() * e.properties.width.valueOf() / 100 : -1;
+    }
 
     this.pushDown(e.properties, e.children, "width");
     this.pushDown(e.properties, e.children, "height");

@@ -46,6 +46,9 @@ var TextAlign;
 class Unit extends Number {
 }
 class Percent extends Unit {
+    constructor(percent) {
+        super(percent);
+    }
 }
 exports.Percent = Percent;
 class Character extends Unit {
@@ -114,9 +117,9 @@ class TOM {
         this.debug = debug == undefined ? this.debug : debug;
     }
     layout(e) {
-        this.pushDown(e.properties, e.children, "width");
-        this.pushDown(e.properties, e.children, "height");
-        e.properties.boundary.top;
+        if (e.properties.width instanceof Percent) {
+            e.properties.width = e.parent && e.parent.properties.width ? e.parent.properties.width.valueOf() * e.properties.width.valueOf() / 100 : -1;
+        }
         this.pushDown(e.properties, e.children, "width");
         this.pushDown(e.properties, e.children, "height");
         if (e.properties.margin.left == "auto" &&

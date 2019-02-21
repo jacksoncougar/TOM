@@ -97,7 +97,7 @@ hjw   /     \`=\`=====.
 document.push(
   new Element({
     content:
-      "Laborum esse cupidatat veniam veniam labore aute do laborum minim qui id adipisicing aliqua. Sit qui cupidatat voluptate enim ipsum commodo sint Lorem in dolor. Reprehenderit officia irure eiusmod laboris nostrud sit occaecat occaecat eu. Velit minim consequat cillum anim ea.",
+      "Laborum esse cupidatat veniam veniam labore aute do laborum minim qui id adipisicing aliqua. Sit qui cupidatat voluptate enim ipsum commodo sint Lorem in dolor.",
     properties: new Properties({
       textAlign: TextAlign.center,
       border: new Border({
@@ -106,7 +106,7 @@ document.push(
         left: { border: "solid", width: 1 },
         right: { border: "solid", width: 1 }
       }),
-      width: 30,
+      width: new Percent(50),
       margin: new MarginBox({ top: 0, right: 1, bottom: 0, left: "auto" }),
       padding: new PaddingBox({ top: 0, right: 1, bottom: 0, left: 1 })
     })

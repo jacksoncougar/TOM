@@ -70,7 +70,7 @@ hjw   /     \`=\`=====.
   })
 );*/
 document.push(new tom_1.Element({
-    content: "Laborum esse cupidatat veniam veniam labore aute do laborum minim qui id adipisicing aliqua. Sit qui cupidatat voluptate enim ipsum commodo sint Lorem in dolor. Reprehenderit officia irure eiusmod laboris nostrud sit occaecat occaecat eu. Velit minim consequat cillum anim ea.",
+    content: "Laborum esse cupidatat veniam veniam labore aute do laborum minim qui id adipisicing aliqua. Sit qui cupidatat voluptate enim ipsum commodo sint Lorem in dolor.",
     properties: new tom_1.Properties({
         textAlign: tom_1.TextAlign.center,
         border: new tom_1.Border({
@@ -79,7 +79,7 @@ document.push(new tom_1.Element({
             left: { border: "solid", width: 1 },
             right: { border: "solid", width: 1 }
         }),
-        width: 30,
+        width: new tom_1.Percent(50),
         margin: new tom_1.MarginBox({ top: 0, right: 1, bottom: 0, left: "auto" }),
         padding: new tom_1.PaddingBox({ top: 0, right: 1, bottom: 0, left: 1 })
     })
