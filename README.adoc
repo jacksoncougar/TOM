@@ -13,8 +13,8 @@ image::resources/example1.png[]
 
 - Supports a raw `Element` class that contains text content.
 - Supports the following `inline properties`:
-width:: { `ch`, `%`, `\?` }
+width:: { `ch`, `%`, `?` }
 margin:: { `ch`, `auto` }
-padding:: { `ch`'}
+padding:: { `ch` }
 border:: { `solid` }
 text-align:: { `left`, `center`, `right` }
