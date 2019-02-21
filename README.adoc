@@ -40,3 +40,4 @@ text-align:: { `left`, `center`, `right` }
 Version 1 supports a `debug` flag for rendering the padding and alignment characters with `ansi escape-sequence` colours.
 
 image::resources/debug-example.png[]
+
