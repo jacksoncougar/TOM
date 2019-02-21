@@ -1,7 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const typescript_optional_1 = require("typescript-optional");
 class Properties {
+    constructor(init) {
+        Object.assign(this, init);
+    }
 }
+exports.Properties = Properties;
 class Element {
     constructor(init) {
         Object.assign(this, init);
@@ -60,7 +65,28 @@ class TOM {
     }
     print() {
         this.layout(this.document);
-        var output = [];
+        for (const e of this.document.children) {
+            console.log(this.render(e));
+        }
+    }
+    render(e) {
+        let buffer = [];
+        let content_width = e.content.length;
+        let width = e.properties.width || 0;
+        let content_start = {};
+        content_start[TextAlign.left] = 0;
+        content_start[TextAlign.center] = (width.valueOf() - content_width) / 2;
+        content_start[TextAlign.right] = (width.valueOf() - content_width);
+        const align = typescript_optional_1.Optional.ofNullable(e.properties.textAlign);
+        let amount = content_start[align.orElseGet(() => TextAlign.left)];
+        for (let fill = 0; fill < amount; fill++) {
+            buffer.push(' ');
+        }
+        buffer.push(e.content);
+        for (let fill = buffer.length; fill < width; fill++) {
+            buffer.push(' ');
+        }
+        return buffer.join('');
     }
 }
 exports.TOM = TOM;

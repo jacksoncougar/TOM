@@ -26,5 +26,8 @@
   "homepage": "https://github.com/jacksoncougar/TOM#readme",
   "devDependencies": {
     "typescript": "^3.3.3"
+  },
+  "dependencies": {
+    "typescript-optional": "^2.0.1"
   }
 }

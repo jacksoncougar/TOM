@@ -1,8 +1,14 @@
-class Properties {
+import { Optional } from "typescript-optional"
+
+export class Properties {
   width: Unit | undefined;
   height: Unit | undefined;
   margin: MarginBox | undefined;
   textAlign: TextAlign | undefined;
+
+  constructor(init?: Partial<Properties>) {
+    Object.assign(this, init);
+  }
 }
 
 export class Element {
@@ -80,8 +86,37 @@ export class TOM {
   print(): void {
     this.layout(this.document);
 
-  var output = [];
+  for (const e of this.document.children) {
+    console.log(this.render(e));
+  }
+  }
 
 
+  render(e : Element) : string
+  {
+      let buffer = [];
+
+      let content_width = e.content.length;
+      let width = e.properties.width || 0;
+
+      let content_start : {[key:string]:number;}= {};
+      content_start[TextAlign.left] = 0;
+      content_start[TextAlign.center] = (width.valueOf() - content_width) / 2;
+      content_start[TextAlign.right] = (width.valueOf() - content_width);
+
+      const align = Optional.ofNullable(e.properties.textAlign);
+      let amount = content_start[align.orElseGet(() => TextAlign.left)];
+
+      for (let fill = 0; fill < amount; fill++) {
+        buffer.push(' ');
+      }
+
+      buffer.push(e.content);
+
+      for (let fill = buffer.length; fill < width; fill++) {
+        buffer.push(' ');
+      }
+
+      return buffer.join('');
   }
 }
