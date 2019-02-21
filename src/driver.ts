@@ -1,4 +1,12 @@
-import { Document, TOM, Element, TextAlign, Properties } from "./tom";
+import {
+  Document,
+  TOM,
+  Element,
+  TextAlign,
+  Properties,
+  MarginBox,
+  Percent
+} from "./tom";
 
 console.log("Demo:");
 
@@ -8,7 +16,10 @@ let tome = new TOM(document);
 document.children.push(
   new Element({
     content: "First",
-    properties: new Properties({ textAlign: TextAlign.right })
+    properties: new Properties({
+      textAlign: TextAlign.right,
+      margin: new MarginBox({ top: 0, right: 5, bottom: 0, left: 0 })
+    })
   })
 );
 

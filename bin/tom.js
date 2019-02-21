@@ -3,10 +3,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const typescript_optional_1 = require("typescript-optional");
 class Properties {
     constructor(init) {
+        this.margin = new MarginBox();
+        this.textAlign = TextAlign.left;
         Object.assign(this, init);
     }
 }
 exports.Properties = Properties;
+class CalculatedProperties {
+    constructor() {
+        this.width = 0;
+        this.height = 0;
+        this.margin_top = 0;
+        this.margin_right = 0;
+        this.margin_bottom = 0;
+        this.margin_left = 0;
+        this.text_align = TextAlign.left;
+    }
+}
 class Element {
     constructor(init) {
         Object.assign(this, init);
@@ -27,9 +40,20 @@ class Unit extends Number {
 }
 class Percent extends Unit {
 }
+exports.Percent = Percent;
 class Character extends Unit {
 }
+exports.Character = Character;
+class Auto extends Boolean {
+}
 class MarginBox {
+    constructor(init) {
+        this.top = 0;
+        this.right = 0;
+        this.bottom = 0;
+        this.left = 0;
+        Object.assign(this, init);
+    }
 }
 exports.MarginBox = MarginBox;
 class Margin {
@@ -52,6 +76,7 @@ class TOM {
     constructor(document, stylesheet) {
         this.document = document;
         this.stylesheet = stylesheet || new Stylesheet();
+        this.properties = new Map();
     }
     layout(e) {
         this.pushDown(e.properties, e.children, "width");
@@ -59,11 +84,18 @@ class TOM {
     }
     pushDown(properties, children, p) {
         for (let child of children) {
-            if (properties[p] && !child.properties[p])
+            if (properties[p] && !child.properties[p]) {
                 child.properties[p] = properties[p];
+            }
         }
     }
     print() {
+        let init = (e) => {
+            this.properties.set(e, new CalculatedProperties());
+            for (const child of e.children)
+                init(child);
+        };
+        init(this.document);
         this.layout(this.document);
         for (const e of this.document.children) {
             console.log(this.render(e));
@@ -71,22 +103,23 @@ class TOM {
     }
     render(e) {
         let buffer = [];
+        let margin = typescript_optional_1.Optional.ofNullable(e.properties.margin).orElse(new MarginBox());
         let content_width = e.content.length;
         let width = e.properties.width || 0;
         let content_start = {};
         content_start[TextAlign.left] = 0;
         content_start[TextAlign.center] = (width.valueOf() - content_width) / 2;
-        content_start[TextAlign.right] = (width.valueOf() - content_width);
+        content_start[TextAlign.right] = width.valueOf() - content_width;
         const align = typescript_optional_1.Optional.ofNullable(e.properties.textAlign);
         let amount = content_start[align.orElseGet(() => TextAlign.left)];
         for (let fill = 0; fill < amount; fill++) {
-            buffer.push(' ');
+            buffer.push(" ");
         }
         buffer.push(e.content);
         for (let fill = buffer.length; fill < width; fill++) {
-            buffer.push(' ');
+            buffer.push(" ");
         }
-        return buffer.join('');
+        return buffer.join("");
     }
 }
 exports.TOM = TOM;
