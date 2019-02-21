@@ -27,14 +27,16 @@ let tome = new tom_1.TOM(document);
 document.children.push(new tom_1.Element({
     content: "Ipsum enim ipsum culpa culpa Lorem ullamco do laborum ullamco quis labore ex. Non minim incididunt ipsum elit dolor fugiat est pariatur officia. Irure nostrud cillum irure et ut. Amet pariatur magna ipsum reprehenderit culpa ea duis do. Enim occaecat elit esse laborum quis ad.",
     properties: new tom_1.Properties({
-        margin: new tom_1.MarginBox({ top: 0, right: 2, bottom: 1, left: 2 })
+        margin: new tom_1.MarginBox({ top: 0, right: 2, bottom: 1, left: 2 }),
+        padding: new tom_1.PaddingBox({ top: 1, right: 1, bottom: 3, left: 1 })
     })
 }));
 document.children.push(new tom_1.Element({
     content: "Laborum esse cupidatat veniam veniam labore aute do laborum minim qui id adipisicing aliqua. Sit qui cupidatat voluptate enim ipsum commodo sint Lorem in dolor. Reprehenderit officia irure eiusmod laboris nostrud sit occaecat occaecat eu. Velit minim consequat cillum anim ea.",
     properties: new tom_1.Properties({
         textAlign: tom_1.TextAlign.center,
-        margin: new tom_1.MarginBox({ top: 0, right: 10, bottom: 1, left: 10 })
+        margin: new tom_1.MarginBox({ top: 0, right: 2, bottom: 1, left: 2 }),
+        padding: new tom_1.PaddingBox({ top: 0, right: 10, bottom: 1, left: 10 })
     })
 }));
 document.children.push(new tom_1.Element({

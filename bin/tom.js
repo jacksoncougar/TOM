@@ -6,6 +6,7 @@ class Properties {
         this.margin = new MarginBox();
         this.boundary = new Boundary();
         this.border = new Border();
+        this.padding = new PaddingBox();
         this.textAlign = TextAlign.left;
         Object.assign(this, init);
     }
@@ -55,6 +56,16 @@ class MarginBox {
     }
 }
 exports.MarginBox = MarginBox;
+class PaddingBox {
+    constructor(init) {
+        this.top = 0;
+        this.right = 0;
+        this.bottom = 0;
+        this.left = 0;
+        Object.assign(this, init);
+    }
+}
+exports.PaddingBox = PaddingBox;
 class Margin {
 }
 exports.Margin = Margin;
@@ -111,15 +122,28 @@ class TOM {
         let buffer = [];
         let margin = typescript_optional_1.Optional.ofNullable(e.properties.margin).orElse(new MarginBox());
         let border = e.properties.border;
+        let padding = e.properties.padding;
         let margin_space = margin.left + margin.right;
         let border_space = border.left.width + border.right.width;
+        let padding_space = padding.left + padding.right;
         let content_width = e.content.length;
         let display_width = typescript_optional_1.Optional.ofNullable(e.properties.width)
             .map($ => $.valueOf())
             .orElse(0) -
             margin_space -
-            border_space;
+            border_space - padding_space;
+        const debug = false;
+        const left_margin_character = debug ? "\x1b[46m \x1b[0m" : " ";
+        const left_spacing_character = debug ? "\x1b[46m▒\x1b[0m" : " ";
+        const right_spacing_character = debug ? "\x1b[31m▓\x1b[0m" : " ";
+        const right_margin_character = debug ? "\x1b[41m \x1b[0m" : " ";
+        const top_margin_character = debug ? "\x1b[43m \x1b[0m" : " ";
+        const bottom_margin_character = debug ? "\x1b[42m \x1b[0m" : " ";
         let parts = [];
+        let top = padding.top;
+        while (top-- > 0) {
+            parts.push(this.fill(display_width, top_margin_character));
+        }
         if (content_width > display_width) {
             // let index = display_width;
             // while (e.content[index--].match(/^( )$/)) {}
@@ -133,20 +157,17 @@ class TOM {
         else {
             parts.push(e.content);
         }
-        const debug = false;
-        const left_margin_character = debug ? "\x1b[46m \x1b[0m" : " ";
-        const left_spacing_character = debug ? "\x1b[46m▒\x1b[0m" : " ";
-        const right_spacing_character = debug ? "\x1b[31m▓\x1b[0m" : " ";
-        const right_margin_character = debug ? "\x1b[41m \x1b[0m" : " ";
-        const top_margin_character = debug ? "\x1b[43m \x1b[0m" : " ";
-        const bottom_margin_character = debug ? "\x1b[42m \x1b[0m" : " ";
+        let bottom = padding.bottom;
+        while (bottom-- > 0) {
+            parts.push(this.fill(display_width, bottom_margin_character));
+        }
         if (margin.top > 0) {
             buffer.push(this.fill(display_width + margin_space, top_margin_character));
             buffer.push("\n");
         }
         if (border.top.width > 0) {
             buffer.push(this.fill(margin.left, left_margin_character));
-            buffer.push(this.draw_border_top(display_width + border_space));
+            buffer.push(this.draw_border_top(display_width + border_space + padding_space));
             buffer.push(this.fill(margin.right, right_margin_character));
             buffer.push("\n");
         }
@@ -156,9 +177,11 @@ class TOM {
             let amount = content_start[align.orElseGet(() => TextAlign.left)];
             buffer.push(this.fill(margin.left, left_margin_character));
             buffer.push(this.fill(border.left.width, "┊"));
+            buffer.push(this.fill(padding.left, left_margin_character));
             buffer.push(this.fill(amount, left_spacing_character));
             buffer.push(part);
             buffer.push(this.fill(display_width.valueOf() - part.length - amount, right_spacing_character));
+            buffer.push(this.fill(padding.right, right_margin_character));
             buffer.push(this.fill(border.right.width, "┊"));
             buffer.push(this.fill(margin.right, right_margin_character));
             buffer.push("\n");
@@ -167,7 +190,7 @@ class TOM {
         if (border.bottom.width > 0) {
             buffer.push("\n");
             buffer.push(this.fill(margin.left, left_margin_character));
-            buffer.push(this.draw_border_bottom(display_width + border_space));
+            buffer.push(this.draw_border_bottom(display_width + border_space + padding_space));
             buffer.push(this.fill(margin.right, right_margin_character));
         }
         if (margin.bottom > 0) {

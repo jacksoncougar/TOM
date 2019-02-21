@@ -5,7 +5,8 @@ import {
   TextAlign,
   Properties,
   MarginBox,
-  Percent
+  Percent,
+  PaddingBox
 } from "./tom";
 
 console.log("Demo:");
@@ -47,7 +48,8 @@ document.children.push(
     content:
       "Ipsum enim ipsum culpa culpa Lorem ullamco do laborum ullamco quis labore ex. Non minim incididunt ipsum elit dolor fugiat est pariatur officia. Irure nostrud cillum irure et ut. Amet pariatur magna ipsum reprehenderit culpa ea duis do. Enim occaecat elit esse laborum quis ad.",
     properties: new Properties({
-      margin: new MarginBox({ top: 0, right: 2, bottom: 1, left: 2 })
+      margin: new MarginBox({ top: 0, right: 2, bottom: 1, left: 2 }),
+      padding: new PaddingBox({ top: 1, right: 1, bottom: 3, left: 1 })
     })
   })
 );
@@ -58,7 +60,8 @@ document.children.push(
       "Laborum esse cupidatat veniam veniam labore aute do laborum minim qui id adipisicing aliqua. Sit qui cupidatat voluptate enim ipsum commodo sint Lorem in dolor. Reprehenderit officia irure eiusmod laboris nostrud sit occaecat occaecat eu. Velit minim consequat cillum anim ea.",
     properties: new Properties({
       textAlign: TextAlign.center,
-      margin: new MarginBox({ top: 0, right: 10, bottom: 1, left: 10 })
+      margin: new MarginBox({ top: 0, right: 2, bottom: 1, left: 2 }),
+      padding: new PaddingBox({ top: 0, right: 10, bottom: 1, left: 10 })
     })
   })
 );
