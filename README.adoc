@@ -11,10 +11,26 @@ image::resources/example1.png[]
 
 == Version #1
 
-- Supports a raw `Element` class that contains text content.
-- Supports the following `inline properties`:
+.Features
+
+- Long lines are wrapped to fit within the Element.
+- Lines can be justified within the element: right, center, or left justification.
+- Borders can be added to elements
+- Both `padding` and `margin` can be set per element.
+- Properties are inherited from parent elements
+- `margin: 'auto'` can be used to center fixed sized element within the document.
+- `width: new Percent(50)` will calculate the element width based on the parent's width.
+
+.Supported `inline properties`:
+
+[horizontal]
 width:: { `ch`, `%`, `?` }
 margin:: { `ch`, `auto` }
 padding:: { `ch` }
 border:: { `solid` }
 text-align:: { `left`, `center`, `right` }
+
+[horizontal, small]
+`ch`:: character absolute units
+`%`:: percent relative units
+`?`:: inherited units
