@@ -6,7 +6,7 @@ export class Properties {
   margin: MarginBox = new MarginBox();
   boundary: Boundary = new Boundary();
   border: Border = new Border();
-  padding : PaddingBox = new PaddingBox();
+  padding: PaddingBox = new PaddingBox();
   textAlign: TextAlign = TextAlign.left;
 
   constructor(init?: Partial<Properties>) {
@@ -80,16 +80,21 @@ export class Document extends Element {
   }
 }
 
-class BorderStyle {
+export class BorderStyle {
   border: "dashed" = "dashed";
   width: 0 | 1 = 1;
 }
 
-class Border {
+export class Border {
   top: BorderStyle = new BorderStyle();
   right: BorderStyle = new BorderStyle();
   bottom: BorderStyle = new BorderStyle();
   left: BorderStyle = new BorderStyle();
+
+  
+  constructor(init?: Partial<Border>) {
+    Object.assign(this, init);
+  }
 }
 
 export class Stylesheet extends Map<Element, Style> {}
@@ -100,9 +105,12 @@ export class TOM {
   document!: Document;
   stylesheet!: Stylesheet;
 
-  constructor(document: Document, stylesheet?: Stylesheet) {
+  debug = false;
+
+  constructor(document: Document, stylesheet?: Stylesheet, debug? : boolean) {
     this.document = document;
     this.stylesheet = stylesheet || new Stylesheet();
+    this.debug = debug == undefined ? this.debug : debug;
   }
 
   layout(e: Element): void {
@@ -150,62 +158,52 @@ export class TOM {
         .map($ => $.valueOf())
         .orElse(0) -
       margin_space -
-      border_space - padding_space;
+      border_space -
+      padding_space;
 
-      const debug = false;
-      const left_margin_character = debug ? "\x1b[46m \x1b[0m" : " ";
-      const left_spacing_character = debug ? "\x1b[46m▒\x1b[0m" : " ";
-      const right_spacing_character = debug ? "\x1b[31m▓\x1b[0m" : " ";
-      const right_margin_character = debug ? "\x1b[41m \x1b[0m" : " ";
-      const top_margin_character = debug ? "\x1b[43m \x1b[0m" : " ";
-      const bottom_margin_character = debug ? "\x1b[42m \x1b[0m" : " ";
+    const left_margin_character = this.debug ? "\x1b[46m \x1b[0m" : " ";
+    const left_spacing_character = this.debug ? "\x1b[46m▒\x1b[0m" : " ";
+    const right_spacing_character = this.debug ? "\x1b[31m▓\x1b[0m" : " ";
+    const right_margin_character = this.debug ? "\x1b[41m \x1b[0m" : " ";
+    const top_margin_character = this.debug ? "\x1b[43m \x1b[0m" : " ";
+    const bottom_margin_character = this.debug ? "\x1b[42m \x1b[0m" : " ";
 
-      
     let parts = [];
 
     let top = <number>padding.top;
     while (top-- > 0) {
-      parts.push(
-        this.fill(display_width, top_margin_character)
-      );
+      parts.push(this.fill(display_width, top_margin_character));
     }
 
     if (content_width > display_width) {
-      // let index = display_width;
-      // while (e.content[index--].match(/^( )$/)) {}
-
-      // parts.push(e.content.substring(0, index));
-      // parts.push(e.content.substring(index));
-
       let matches = e.content.match(
-        new RegExp(`.{1,${display_width - 1}} `, "g")
+        new RegExp(`.{1,${display_width}} `, "g")
       );
-      if (matches) for (const match of matches) parts.push(match);
+      if (matches) for (const match of matches) parts.push(match.trim());
     } else {
       parts.push(e.content);
     }
 
     let bottom = <number>padding.bottom;
     while (bottom-- > 0) {
-      parts.push(
-        this.fill(display_width, bottom_margin_character)
-      );
+      parts.push(this.fill(display_width, bottom_margin_character));
     }
 
     if (margin.top > 0) {
       buffer.push(
-        this.fill(display_width + margin_space, top_margin_character)
+        this.fill(display_width + margin_space + border_space + padding_space, top_margin_character)
       );
       buffer.push("\n");
     }
 
     if (border.top.width > 0) {
       buffer.push(this.fill(<number>margin.left, left_margin_character));
-      buffer.push(this.draw_border_top(display_width + border_space + padding_space));
+      buffer.push(
+        this.draw_border_top(display_width + border_space + padding_space)
+      );
       buffer.push(this.fill(<number>margin.right, right_margin_character));
       buffer.push("\n");
     }
-
 
     for (const part of parts) {
       let content_start = this.spacing(display_width, part);
@@ -214,7 +212,7 @@ export class TOM {
       let amount = content_start[align.orElseGet(() => TextAlign.left)];
 
       buffer.push(this.fill(<number>margin.left, left_margin_character));
-      buffer.push(this.fill(<number>border.left.width, "┊"));
+      buffer.push(this.fill(<number>border.left.width, '│'));
       buffer.push(this.fill(<number>padding.left, left_margin_character));
       buffer.push(this.fill(amount, left_spacing_character));
       buffer.push(part);
@@ -226,7 +224,7 @@ export class TOM {
       );
 
       buffer.push(this.fill(<number>padding.right, right_margin_character));
-      buffer.push(this.fill(<number>border.right.width, "┊"));
+      buffer.push(this.fill(<number>border.right.width, '│'));
       buffer.push(this.fill(<number>margin.right, right_margin_character));
 
       buffer.push("\n");
@@ -236,14 +234,18 @@ export class TOM {
     if (border.bottom.width > 0) {
       buffer.push("\n");
       buffer.push(this.fill(<number>margin.left, left_margin_character));
-      buffer.push(this.draw_border_bottom(<number>display_width + border_space + padding_space));
+      buffer.push(
+        this.draw_border_bottom(
+          <number>display_width + border_space + padding_space
+        )
+      );
       buffer.push(this.fill(<number>margin.right, right_margin_character));
     }
 
     if (margin.bottom > 0) {
       buffer.push("\n");
       buffer.push(
-        this.fill(display_width + margin_space, bottom_margin_character)
+        this.fill(display_width + margin_space + border_space + padding_space, bottom_margin_character)
       );
     }
 

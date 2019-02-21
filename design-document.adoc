@@ -134,7 +134,7 @@ H1.width : undefined
 
 We want to support the following properties:
 
-- `width`: { ch, % }
+- `width`: { ch, %, ? }
 - `border`
 - `margin`: { ch, auto }
 - `padding`: { ch }

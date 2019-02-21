@@ -6,7 +6,9 @@ import {
   Properties,
   MarginBox,
   Percent,
-  PaddingBox
+  PaddingBox,
+  Border,
+  BorderStyle
 } from "./tom";
 
 console.log("Demo:");
@@ -28,10 +30,9 @@ class Tape {
       else size--;
     }
 
-    this.value = buffer.reverse().join('');
+    this.value = buffer.reverse().join("");
   }
 }
-
 
 const document_width = 50;
 
@@ -41,7 +42,7 @@ document.properties.width = document_width;
 const tape = new Tape(document_width).value;
 console.log(tape);
 
-let tome = new TOM(document);
+let tome = new TOM(document, undefined, true);
 
 document.children.push(
   new Element({
@@ -49,7 +50,7 @@ document.children.push(
       "Ipsum enim ipsum culpa culpa Lorem ullamco do laborum ullamco quis labore ex. Non minim incididunt ipsum elit dolor fugiat est pariatur officia. Irure nostrud cillum irure et ut. Amet pariatur magna ipsum reprehenderit culpa ea duis do. Enim occaecat elit esse laborum quis ad.",
     properties: new Properties({
       margin: new MarginBox({ top: 0, right: 2, bottom: 1, left: 2 }),
-      padding: new PaddingBox({ top: 1, right: 1, bottom: 3, left: 1 })
+      padding: new PaddingBox({ top: 1, right: 1, bottom: 3, left: 8 })
     })
   })
 );
@@ -72,7 +73,12 @@ document.children.push(
       "Laboris exercitation commodo labore commodo deserunt ad. Cupidatat esse anim mollit adipisicing veniam in proident proident amet consectetur ut consectetur. Elit ipsum dolor est cillum consequat. Id eu sit ex sunt voluptate ex id ea. Sunt cupidatat magna magna ad aliqua ad amet enim enim in. Amet aliqua cupidatat esse nostrud sint adipisicing. Consectetur dolor do aliquip do do cillum elit amet sunt sit non aliquip quis.",
     properties: new Properties({
       textAlign: TextAlign.right,
-      margin: new MarginBox({ top: 0, right: 2, bottom: 1, left: 2 })
+      border: new Border({
+        top: { border: "dashed", width: 0 },
+        bottom: { border: "dashed", width: 0 }
+      }),
+      margin: new MarginBox({ top: 0, right: 2, bottom: 1, left: 2 }),
+      padding: new PaddingBox({ top: 0, right: 1, bottom: 0, left: 1 })
     })
   })
 );
@@ -102,7 +108,7 @@ document.children.push(
     content: "Third",
     properties: new Properties({
       textAlign: TextAlign.left,
-      margin: new MarginBox({ top: 0, right: 10, bottom: 0, left: 10 })
+      margin: new MarginBox({ top: 0, right: 20, bottom: 0, left: 10 })
     })
   })
 );
