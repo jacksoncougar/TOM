@@ -105,13 +105,26 @@ class TOM {
         content_start[TextAlign.center] =
             display_width.valueOf() / 2 - content_width / 2;
         content_start[TextAlign.right] = display_width.valueOf() - content_width;
-        const align = typescript_optional_1.Optional.ofNullable(e.properties.textAlign);
-        let amount = content_start[align.orElseGet(() => TextAlign.left)];
-        buffer.push(this.fill(margin.left, "\x1b[46m \x1b[0m"));
-        buffer.push(this.fill(amount, "\x1b[46m▒\x1b[0m"));
-        buffer.push(e.content);
-        buffer.push(this.fill(display_width.valueOf() - content_width - amount, "\x1b[31m▓\x1b[0m"));
-        buffer.push(this.fill(margin.right, "\x1b[41m \x1b[0m"));
+        let parts = [];
+        if (content_width > display_width) {
+            let index = display_width;
+            while (e.content[index--].match(/^( )$/)) { }
+            parts.push(e.content.substring(0, index));
+            parts.push(e.content.substring(index));
+        }
+        else {
+            parts.push(e.content);
+        }
+        for (const part of parts) {
+            const align = typescript_optional_1.Optional.ofNullable(e.properties.textAlign);
+            let amount = content_start[align.orElseGet(() => TextAlign.left)];
+            buffer.push(this.fill(margin.left, "\x1b[46m \x1b[0m"));
+            buffer.push(this.fill(amount, "\x1b[46m▒\x1b[0m"));
+            buffer.push(part);
+            buffer.push(this.fill(display_width.valueOf() - content_width - amount, "\x1b[31m▓\x1b[0m"));
+            buffer.push(this.fill(margin.right, "\x1b[41m \x1b[0m"));
+            buffer.push('\n');
+        }
         return buffer.join("");
     }
     fill(amount, value) {

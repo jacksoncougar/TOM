@@ -40,14 +40,25 @@ document.children.push(
 );
 
 document.children.push(
-  new Element({
-    content: "Third",
-    properties: new Properties({
-      textAlign: TextAlign.left,
-      margin: new MarginBox({ top: 0, right: 10, bottom: 0, left: 10 })
+    new Element({
+      content: "Third",
+      properties: new Properties({
+        textAlign: TextAlign.left,
+        margin: new MarginBox({ top: 0, right: 10, bottom: 0, left: 10 })
+      })
     })
-  })
-);
+  );
+
+  
+document.children.push(
+    new Element({
+      content: "Ipsum enim ipsum culpa culpa Lorem ullamco do laborum ullamco quis labore ex. Non minim incididunt ipsum elit dolor fugiat est pariatur officia. Irure nostrud cillum irure et ut. Amet pariatur magna ipsum reprehenderit culpa ea duis do. Enim occaecat elit esse laborum quis ad.",
+      properties: new Properties({
+        textAlign: TextAlign.left,
+        margin: new MarginBox({ top: 0, right: 10, bottom: 0, left: 10 })
+      })
+    })
+  );
 
 tome.print();
 
