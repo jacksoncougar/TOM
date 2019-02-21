@@ -18,18 +18,57 @@ class Tape {
         this.value = buffer.reverse().join("");
     }
 }
-const document_width = 50;
+const document_width = 60;
 let document = new tom_1.Document();
 document.properties.width = document_width;
 const tape = new Tape(document_width).value;
 console.log(tape);
-let tome = new tom_1.TOM(document, undefined, true);
+let tome = new tom_1.TOM(document, undefined, false);
 document.push(new tom_1.Element({
     content: "Ipsum enim ipsum culpa culpa Lorem ullamco do laborum ullamco quis labore ex. Non minim incididunt ipsum elit dolor fugiat est pariatur officia. Irure nostrud cillum irure et ut. Amet pariatur magna ipsum reprehenderit culpa ea duis do. Enim occaecat elit esse laborum quis ad.",
     properties: new tom_1.Properties({
         margin: new tom_1.MarginBox({ top: 0, right: 2, bottom: 1, left: 2 })
     })
 }));
+/*
+document.push(
+  new Element({
+    content: `
+    ,-.,-.,-.,-.
+    \`7        .'
+     |        |
+     |      .-!.
+     |  .---| ||
+     | (C   \`-'^.
+     |  \`      _;
+     |        |
+    ("\`--.    |
+    /\`-._ \`-._|        /\\
+   /     \`-._/=\      /\`-\\
+  /  /    \\  >~7\     |\`-|
+ /  |      | \\-\\ ;   /\ /
+;   \`-j--f-'  \\/\`!__7\\ y
+|     |  |     \`./_I_;'
+|     |  |       ||
+|     |  |       ||
+|     |  |       ||
+|     |  |_      ||
+|____/   .-'_____|'
+    (/|||\\\\ | |
+     |\`^' \` | \\
+     |      | |
+     \\      | |
+     |      | |
+     |      | /
+     |      | |
+     /      | |
+     |______|_|
+       |___|_|
+hjw   /     \`=\`=====.
+      \`='-----------
+    `
+  })
+);*/
 document.push(new tom_1.Element({
     content: "Laborum esse cupidatat veniam veniam labore aute do laborum minim qui id adipisicing aliqua. Sit qui cupidatat voluptate enim ipsum commodo sint Lorem in dolor. Reprehenderit officia irure eiusmod laboris nostrud sit occaecat occaecat eu. Velit minim consequat cillum anim ea.",
     properties: new tom_1.Properties({
@@ -41,12 +80,42 @@ document.push(new tom_1.Element({
             right: { border: "solid", width: 1 }
         }),
         width: 30,
-        margin: new tom_1.MarginBox({ top: 0, right: 1, bottom: 1, left: 'auto' }),
-        padding: new tom_1.PaddingBox({ top: 2, right: 2, bottom: 2, left: 2 })
+        margin: new tom_1.MarginBox({ top: 0, right: 1, bottom: 0, left: "auto" }),
+        padding: new tom_1.PaddingBox({ top: 0, right: 1, bottom: 0, left: 1 })
     })
 }));
 document.push(new tom_1.Element({
-    content: "Laboris exercitation commodo labore commodo deserunt ad. Cupidatat esse anim mollit adipisicing veniam in proident proident amet consectetur ut consectetur. Elit ipsum dolor est cillum consequat. Id eu sit ex sunt voluptate ex id ea. Sunt cupidatat magna magna ad aliqua ad amet enim enim in. Amet aliqua cupidatat esse nostrud sint adipisicing. Consectetur dolor do aliquip do do cillum elit amet sunt sit non aliquip quis.",
+    content: "Aliquip labore nostrud do anim id sint cillum aliqua ipsum pariatur consectetur ipsum. Elit officia ad reprehenderit sit anim nisi tempor adipisicing.",
+    properties: new tom_1.Properties({
+        textAlign: tom_1.TextAlign.center,
+        border: new tom_1.Border({
+            top: { border: "solid", width: 1 },
+            bottom: { border: "solid", width: 1 },
+            left: { border: "solid", width: 1 },
+            right: { border: "solid", width: 1 }
+        }),
+        width: 30,
+        margin: new tom_1.MarginBox({ top: 0, right: 'auto', bottom: 0, left: 2 }),
+        padding: new tom_1.PaddingBox({ top: 0, right: 1, bottom: 0, left: 1 })
+    })
+}));
+document.push(new tom_1.Element({
+    content: "Et do ullamco mollit adipisicing nulla in dolor ipsum ex magna.",
+    properties: new tom_1.Properties({
+        textAlign: tom_1.TextAlign.center,
+        border: new tom_1.Border({
+            top: { border: "solid", width: 1 },
+            bottom: { border: "solid", width: 1 },
+            left: { border: "solid", width: 1 },
+            right: { border: "solid", width: 1 }
+        }),
+        width: 30,
+        margin: new tom_1.MarginBox({ top: 0, right: 'auto', bottom: 0, left: 'auto' }),
+        padding: new tom_1.PaddingBox({ top: 0, right: 1, bottom: 0, left: 1 })
+    })
+}));
+document.push(new tom_1.Element({
+    content: "Laboris exercitation commodo labore commodo deserunt ad. Cupidatat esse anim mollit adipisicing veniam in proident proident amet consectetur ut consectetur. ",
     properties: new tom_1.Properties({
         textAlign: tom_1.TextAlign.right,
         margin: new tom_1.MarginBox({ top: 0, right: 2, bottom: 1, left: 2 }),

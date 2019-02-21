@@ -145,6 +145,42 @@ export class TOM {
 
       e.properties.width = e.parent.properties.width;
     }
+
+    if (
+      e.properties.margin.right == "auto" &&
+      e.properties.margin.left != "auto" &&
+      e.parent &&
+      e.parent.properties.width &&
+      e.properties.width
+    ) {
+      e.properties.margin.right = <Character>(
+        (e.parent.properties.width.valueOf() -
+          e.properties.width.valueOf() -
+          e.properties.margin.left.valueOf())
+      );
+
+      e.properties.width = e.parent.properties.width;
+    }
+
+    if (
+      e.properties.margin.right == "auto" &&
+      e.properties.margin.left == "auto" &&
+      e.parent &&
+      e.parent.properties.width &&
+      e.properties.width
+    ) {
+      e.properties.margin.right = <Character>(
+        ((e.parent.properties.width.valueOf() - e.properties.width.valueOf()) /
+          2)
+      );
+      e.properties.margin.left = <Character>(
+        ((e.parent.properties.width.valueOf() - e.properties.width.valueOf()) /
+          2)
+      );
+
+      e.properties.width = e.parent.properties.width;
+    }
+
     for (const child of e.children) this.layout(child);
   }
 
@@ -206,8 +242,12 @@ export class TOM {
     }
 
     if (content_width > display_width) {
-      let matches = e.content.match(new RegExp(`.{1,${display_width}} `, "g"));
-      if (matches) for (const match of matches) parts.push(match.trim());
+      let matches = e.content.match(
+        new RegExp(`.{1,${display_width}}( |\n|$)`, "g")
+      );
+      if (matches)
+        for (const match of matches)
+          parts.push(match[match.length - 1].match(/\s/) ?match.slice(0, match.length - 1) : match);
     } else {
       parts.push(e.content);
     }

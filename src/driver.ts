@@ -34,7 +34,7 @@ class Tape {
   }
 }
 
-const document_width = 50;
+const document_width = 60;
 
 let document = new Document();
 document.properties.width = document_width;
@@ -42,7 +42,7 @@ document.properties.width = document_width;
 const tape = new Tape(document_width).value;
 console.log(tape);
 
-let tome = new TOM(document, undefined, true);
+let tome = new TOM(document, undefined, false);
 
 document.push(
   new Element({
@@ -53,6 +53,46 @@ document.push(
     })
   })
 );
+
+/*
+document.push(
+  new Element({
+    content: `
+    ,-.,-.,-.,-.
+    \`7        .'
+     |        |
+     |      .-!.
+     |  .---| ||
+     | (C   \`-'^.
+     |  \`      _;
+     |        |
+    ("\`--.    |
+    /\`-._ \`-._|        /\\
+   /     \`-._/=\      /\`-\\
+  /  /    \\  >~7\     |\`-|
+ /  |      | \\-\\ ;   /\ /
+;   \`-j--f-'  \\/\`!__7\\ y
+|     |  |     \`./_I_;'
+|     |  |       ||
+|     |  |       ||
+|     |  |       ||
+|     |  |_      ||
+|____/   .-'_____|'
+    (/|||\\\\ | |
+     |\`^' \` | \\
+     |      | |
+     \\      | |
+     |      | |
+     |      | /
+     |      | |
+     /      | |
+     |______|_|
+       |___|_|
+hjw   /     \`=\`=====.
+      \`='-----------
+    `
+  })
+);*/
 
 document.push(
   new Element({
@@ -67,8 +107,8 @@ document.push(
         right: { border: "solid", width: 1 }
       }),
       width: 30,
-      margin: new MarginBox({ top: 0, right: 1, bottom: 1, left: 'auto' }),
-      padding: new PaddingBox({ top: 2, right: 2, bottom: 2, left: 2 })
+      margin: new MarginBox({ top: 0, right: 1, bottom: 0, left: "auto" }),
+      padding: new PaddingBox({ top: 0, right: 1, bottom: 0, left: 1 })
     })
   })
 );
@@ -76,7 +116,46 @@ document.push(
 document.push(
   new Element({
     content:
-      "Laboris exercitation commodo labore commodo deserunt ad. Cupidatat esse anim mollit adipisicing veniam in proident proident amet consectetur ut consectetur. Elit ipsum dolor est cillum consequat. Id eu sit ex sunt voluptate ex id ea. Sunt cupidatat magna magna ad aliqua ad amet enim enim in. Amet aliqua cupidatat esse nostrud sint adipisicing. Consectetur dolor do aliquip do do cillum elit amet sunt sit non aliquip quis.",
+      "Aliquip labore nostrud do anim id sint cillum aliqua ipsum pariatur consectetur ipsum. Elit officia ad reprehenderit sit anim nisi tempor adipisicing.",
+    properties: new Properties({
+      textAlign: TextAlign.center,
+      border: new Border({
+        top: { border: "solid", width: 1 },
+        bottom: { border: "solid", width: 1 },
+        left: { border: "solid", width: 1 },
+        right: { border: "solid", width: 1 }
+      }),
+      width: 30,
+      margin: new MarginBox({ top: 0, right: 'auto', bottom: 0, left: 2 }),
+      padding: new PaddingBox({ top: 0, right: 1, bottom: 0, left: 1 })
+    })
+  })
+);
+
+
+document.push(
+  new Element({
+    content:
+      "Et do ullamco mollit adipisicing nulla in dolor ipsum ex magna.",
+    properties: new Properties({
+      textAlign: TextAlign.center,
+      border: new Border({
+        top: { border: "solid", width: 1 },
+        bottom: { border: "solid", width: 1 },
+        left: { border: "solid", width: 1 },
+        right: { border: "solid", width: 1 }
+      }),
+      width: 30,
+      margin: new MarginBox({ top: 0, right: 'auto', bottom: 0, left: 'auto' }),
+      padding: new PaddingBox({ top: 0, right: 1, bottom: 0, left: 1 })
+    })
+  })
+);
+
+document.push(
+  new Element({
+    content:
+      "Laboris exercitation commodo labore commodo deserunt ad. Cupidatat esse anim mollit adipisicing veniam in proident proident amet consectetur ut consectetur. ",
     properties: new Properties({
       textAlign: TextAlign.right,
       margin: new MarginBox({ top: 0, right: 2, bottom: 1, left: 2 }),
