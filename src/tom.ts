@@ -19,6 +19,10 @@ class Boundary {
   right: Character = 0;
   bottom: Character = 0;
   left: Character = 0;
+
+  get horizontal() {
+    return this.right.valueOf() + this.left.valueOf();
+  }
 }
 
 export class Element {
@@ -26,6 +30,11 @@ export class Element {
   properties!: Properties;
   parent: Element | undefined;
   children!: Element[];
+
+  push(e: Element) {
+    e.parent = this;
+    this.children.push(e);
+  }
 
   constructor(init?: Partial<Element>) {
     Object.assign(this, init);
@@ -48,9 +57,9 @@ class Auto extends Boolean {}
 
 export class MarginBox {
   top: Percent | Character = 0;
-  right: Percent | Character | Auto = 0;
+  right: Percent | Character | "auto" = 0;
   bottom: Percent | Character = 0;
-  left: Percent | Character | Auto = 0;
+  left: Percent | Character | "auto" = 0;
 
   constructor(init?: Partial<MarginBox>) {
     Object.assign(this, init);
@@ -81,8 +90,8 @@ export class Document extends Element {
 }
 
 export class BorderStyle {
-  border: "dashed" = "dashed";
-  width: 0 | 1 = 1;
+  border: "solid" | "dashed" = "dashed";
+  width: 0 | 1 = 0;
 }
 
 export class Border {
@@ -91,7 +100,6 @@ export class Border {
   bottom: BorderStyle = new BorderStyle();
   left: BorderStyle = new BorderStyle();
 
-  
   constructor(init?: Partial<Border>) {
     Object.assign(this, init);
   }
@@ -107,7 +115,7 @@ export class TOM {
 
   debug = false;
 
-  constructor(document: Document, stylesheet?: Stylesheet, debug? : boolean) {
+  constructor(document: Document, stylesheet?: Stylesheet, debug?: boolean) {
     this.document = document;
     this.stylesheet = stylesheet || new Stylesheet();
     this.debug = debug == undefined ? this.debug : debug;
@@ -116,16 +124,38 @@ export class TOM {
   layout(e: Element): void {
     this.pushDown(e.properties, e.children, "width");
     this.pushDown(e.properties, e.children, "height");
+
+    e.properties.boundary.top;
+
+    this.pushDown(e.properties, e.children, "width");
+    this.pushDown(e.properties, e.children, "height");
+
+    if (
+      e.properties.margin.left == "auto" &&
+      e.properties.margin.right != "auto" &&
+      e.parent &&
+      e.parent.properties.width &&
+      e.properties.width
+    ) {
+      e.properties.margin.left = <Character>(
+        (e.parent.properties.width.valueOf() -
+          e.properties.width.valueOf() -
+          e.properties.margin.right.valueOf())
+      );
+
+      e.properties.width = e.parent.properties.width;
+    }
+    for (const child of e.children) this.layout(child);
   }
 
   pushDown<K extends keyof Properties>(
     properties: Properties,
     children: Element[],
-    p: K
+    src: K
   ) {
     for (let child of children) {
-      if (properties[p] && !child.properties[p]) {
-        child.properties[p] = properties[p];
+      if (properties[src] && !child.properties[src]) {
+        child.properties[src] = properties[src];
       }
     }
   }
@@ -176,9 +206,7 @@ export class TOM {
     }
 
     if (content_width > display_width) {
-      let matches = e.content.match(
-        new RegExp(`.{1,${display_width}} `, "g")
-      );
+      let matches = e.content.match(new RegExp(`.{1,${display_width}} `, "g"));
       if (matches) for (const match of matches) parts.push(match.trim());
     } else {
       parts.push(e.content);
@@ -191,7 +219,10 @@ export class TOM {
 
     if (margin.top > 0) {
       buffer.push(
-        this.fill(display_width + margin_space + border_space + padding_space, top_margin_character)
+        this.fill(
+          display_width + margin_space + border_space + padding_space,
+          top_margin_character
+        )
       );
       buffer.push("\n");
     }
@@ -212,7 +243,7 @@ export class TOM {
       let amount = content_start[align.orElseGet(() => TextAlign.left)];
 
       buffer.push(this.fill(<number>margin.left, left_margin_character));
-      buffer.push(this.fill(<number>border.left.width, '│'));
+      buffer.push(this.fill(<number>border.left.width, "│"));
       buffer.push(this.fill(<number>padding.left, left_margin_character));
       buffer.push(this.fill(amount, left_spacing_character));
       buffer.push(part);
@@ -224,7 +255,7 @@ export class TOM {
       );
 
       buffer.push(this.fill(<number>padding.right, right_margin_character));
-      buffer.push(this.fill(<number>border.right.width, '│'));
+      buffer.push(this.fill(<number>border.right.width, "│"));
       buffer.push(this.fill(<number>margin.right, right_margin_character));
 
       buffer.push("\n");
@@ -245,7 +276,10 @@ export class TOM {
     if (margin.bottom > 0) {
       buffer.push("\n");
       buffer.push(
-        this.fill(display_width + margin_space + border_space + padding_space, bottom_margin_character)
+        this.fill(
+          display_width + margin_space + border_space + padding_space,
+          bottom_margin_character
+        )
       );
     }
 

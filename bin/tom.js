@@ -19,8 +19,15 @@ class Boundary {
         this.bottom = 0;
         this.left = 0;
     }
+    get horizontal() {
+        return this.right.valueOf() + this.left.valueOf();
+    }
 }
 class Element {
+    push(e) {
+        e.parent = this;
+        this.children.push(e);
+    }
     constructor(init) {
         Object.assign(this, init);
         if (!this.children)
@@ -79,7 +86,7 @@ exports.Document = Document;
 class BorderStyle {
     constructor() {
         this.border = "dashed";
-        this.width = 1;
+        this.width = 0;
     }
 }
 exports.BorderStyle = BorderStyle;
@@ -109,11 +116,26 @@ class TOM {
     layout(e) {
         this.pushDown(e.properties, e.children, "width");
         this.pushDown(e.properties, e.children, "height");
+        e.properties.boundary.top;
+        this.pushDown(e.properties, e.children, "width");
+        this.pushDown(e.properties, e.children, "height");
+        if (e.properties.margin.left == "auto" &&
+            e.properties.margin.right != "auto" &&
+            e.parent &&
+            e.parent.properties.width &&
+            e.properties.width) {
+            e.properties.margin.left = ((e.parent.properties.width.valueOf() -
+                e.properties.width.valueOf() -
+                e.properties.margin.right.valueOf()));
+            e.properties.width = e.parent.properties.width;
+        }
+        for (const child of e.children)
+            this.layout(child);
     }
-    pushDown(properties, children, p) {
+    pushDown(properties, children, src) {
         for (let child of children) {
-            if (properties[p] && !child.properties[p]) {
-                child.properties[p] = properties[p];
+            if (properties[src] && !child.properties[src]) {
+                child.properties[src] = properties[src];
             }
         }
     }
@@ -177,13 +199,13 @@ class TOM {
             const align = typescript_optional_1.Optional.ofNullable(e.properties.textAlign);
             let amount = content_start[align.orElseGet(() => TextAlign.left)];
             buffer.push(this.fill(margin.left, left_margin_character));
-            buffer.push(this.fill(border.left.width, '│'));
+            buffer.push(this.fill(border.left.width, "│"));
             buffer.push(this.fill(padding.left, left_margin_character));
             buffer.push(this.fill(amount, left_spacing_character));
             buffer.push(part);
             buffer.push(this.fill(display_width.valueOf() - part.length - amount, right_spacing_character));
             buffer.push(this.fill(padding.right, right_margin_character));
-            buffer.push(this.fill(border.right.width, '│'));
+            buffer.push(this.fill(border.right.width, "│"));
             buffer.push(this.fill(margin.right, right_margin_character));
             buffer.push("\n");
         }

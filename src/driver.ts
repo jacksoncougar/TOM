@@ -44,46 +44,48 @@ console.log(tape);
 
 let tome = new TOM(document, undefined, true);
 
-document.children.push(
+document.push(
   new Element({
     content:
       "Ipsum enim ipsum culpa culpa Lorem ullamco do laborum ullamco quis labore ex. Non minim incididunt ipsum elit dolor fugiat est pariatur officia. Irure nostrud cillum irure et ut. Amet pariatur magna ipsum reprehenderit culpa ea duis do. Enim occaecat elit esse laborum quis ad.",
     properties: new Properties({
-      margin: new MarginBox({ top: 0, right: 2, bottom: 1, left: 2 }),
-      padding: new PaddingBox({ top: 1, right: 1, bottom: 3, left: 8 })
+      margin: new MarginBox({ top: 0, right: 2, bottom: 1, left: 2 })
     })
   })
 );
 
-document.children.push(
+document.push(
   new Element({
     content:
       "Laborum esse cupidatat veniam veniam labore aute do laborum minim qui id adipisicing aliqua. Sit qui cupidatat voluptate enim ipsum commodo sint Lorem in dolor. Reprehenderit officia irure eiusmod laboris nostrud sit occaecat occaecat eu. Velit minim consequat cillum anim ea.",
     properties: new Properties({
       textAlign: TextAlign.center,
-      margin: new MarginBox({ top: 0, right: 2, bottom: 1, left: 2 }),
-      padding: new PaddingBox({ top: 0, right: 10, bottom: 1, left: 10 })
+      border: new Border({
+        top: { border: "solid", width: 1 },
+        bottom: { border: "solid", width: 1 },
+        left: { border: "solid", width: 1 },
+        right: { border: "solid", width: 1 }
+      }),
+      width: 30,
+      margin: new MarginBox({ top: 0, right: 1, bottom: 1, left: 'auto' }),
+      padding: new PaddingBox({ top: 2, right: 2, bottom: 2, left: 2 })
     })
   })
 );
 
-document.children.push(
+document.push(
   new Element({
     content:
       "Laboris exercitation commodo labore commodo deserunt ad. Cupidatat esse anim mollit adipisicing veniam in proident proident amet consectetur ut consectetur. Elit ipsum dolor est cillum consequat. Id eu sit ex sunt voluptate ex id ea. Sunt cupidatat magna magna ad aliqua ad amet enim enim in. Amet aliqua cupidatat esse nostrud sint adipisicing. Consectetur dolor do aliquip do do cillum elit amet sunt sit non aliquip quis.",
     properties: new Properties({
       textAlign: TextAlign.right,
-      border: new Border({
-        top: { border: "dashed", width: 0 },
-        bottom: { border: "dashed", width: 0 }
-      }),
       margin: new MarginBox({ top: 0, right: 2, bottom: 1, left: 2 }),
       padding: new PaddingBox({ top: 0, right: 1, bottom: 0, left: 1 })
     })
   })
 );
 
-document.children.push(
+document.push(
   new Element({
     content: "First",
     properties: new Properties({
@@ -93,7 +95,7 @@ document.children.push(
   })
 );
 
-document.children.push(
+document.push(
   new Element({
     content: "Second",
     properties: new Properties({
@@ -103,7 +105,7 @@ document.children.push(
   })
 );
 
-document.children.push(
+document.push(
   new Element({
     content: "Third",
     properties: new Properties({

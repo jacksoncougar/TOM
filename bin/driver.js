@@ -24,48 +24,50 @@ document.properties.width = document_width;
 const tape = new Tape(document_width).value;
 console.log(tape);
 let tome = new tom_1.TOM(document, undefined, true);
-document.children.push(new tom_1.Element({
+document.push(new tom_1.Element({
     content: "Ipsum enim ipsum culpa culpa Lorem ullamco do laborum ullamco quis labore ex. Non minim incididunt ipsum elit dolor fugiat est pariatur officia. Irure nostrud cillum irure et ut. Amet pariatur magna ipsum reprehenderit culpa ea duis do. Enim occaecat elit esse laborum quis ad.",
     properties: new tom_1.Properties({
-        margin: new tom_1.MarginBox({ top: 0, right: 2, bottom: 1, left: 2 }),
-        padding: new tom_1.PaddingBox({ top: 1, right: 1, bottom: 3, left: 8 })
+        margin: new tom_1.MarginBox({ top: 0, right: 2, bottom: 1, left: 2 })
     })
 }));
-document.children.push(new tom_1.Element({
+document.push(new tom_1.Element({
     content: "Laborum esse cupidatat veniam veniam labore aute do laborum minim qui id adipisicing aliqua. Sit qui cupidatat voluptate enim ipsum commodo sint Lorem in dolor. Reprehenderit officia irure eiusmod laboris nostrud sit occaecat occaecat eu. Velit minim consequat cillum anim ea.",
     properties: new tom_1.Properties({
         textAlign: tom_1.TextAlign.center,
-        margin: new tom_1.MarginBox({ top: 0, right: 2, bottom: 1, left: 2 }),
-        padding: new tom_1.PaddingBox({ top: 0, right: 10, bottom: 1, left: 10 })
+        border: new tom_1.Border({
+            top: { border: "solid", width: 1 },
+            bottom: { border: "solid", width: 1 },
+            left: { border: "solid", width: 1 },
+            right: { border: "solid", width: 1 }
+        }),
+        width: 30,
+        margin: new tom_1.MarginBox({ top: 0, right: 1, bottom: 1, left: 'auto' }),
+        padding: new tom_1.PaddingBox({ top: 2, right: 2, bottom: 2, left: 2 })
     })
 }));
-document.children.push(new tom_1.Element({
+document.push(new tom_1.Element({
     content: "Laboris exercitation commodo labore commodo deserunt ad. Cupidatat esse anim mollit adipisicing veniam in proident proident amet consectetur ut consectetur. Elit ipsum dolor est cillum consequat. Id eu sit ex sunt voluptate ex id ea. Sunt cupidatat magna magna ad aliqua ad amet enim enim in. Amet aliqua cupidatat esse nostrud sint adipisicing. Consectetur dolor do aliquip do do cillum elit amet sunt sit non aliquip quis.",
     properties: new tom_1.Properties({
         textAlign: tom_1.TextAlign.right,
-        border: new tom_1.Border({
-            top: { border: "dashed", width: 0 },
-            bottom: { border: "dashed", width: 0 }
-        }),
         margin: new tom_1.MarginBox({ top: 0, right: 2, bottom: 1, left: 2 }),
         padding: new tom_1.PaddingBox({ top: 0, right: 1, bottom: 0, left: 1 })
     })
 }));
-document.children.push(new tom_1.Element({
+document.push(new tom_1.Element({
     content: "First",
     properties: new tom_1.Properties({
         textAlign: tom_1.TextAlign.right,
         margin: new tom_1.MarginBox({ top: 0, right: 10, bottom: 0, left: 0 })
     })
 }));
-document.children.push(new tom_1.Element({
+document.push(new tom_1.Element({
     content: "Second",
     properties: new tom_1.Properties({
         textAlign: tom_1.TextAlign.center,
         margin: new tom_1.MarginBox({ top: 0, right: 10, bottom: 0, left: 10 })
     })
 }));
-document.children.push(new tom_1.Element({
+document.push(new tom_1.Element({
     content: "Third",
     properties: new tom_1.Properties({
         textAlign: tom_1.TextAlign.left,
