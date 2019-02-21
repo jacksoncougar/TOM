@@ -10,6 +10,10 @@ import {
 
 console.log("Demo:");
 
+const tape = "┊....╵....┊....╵....┊....╵....┊....╵....┊....╵....┊....╵....┊....╵....┊....╵....┊";
+
+console.log(tape);
+
 let document = new Document();
 let tome = new TOM(document);
 
@@ -39,4 +43,5 @@ document.children.push(
 
 tome.print();
 
+console.log(tape);
 console.log("done.");

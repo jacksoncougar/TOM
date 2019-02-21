@@ -4,6 +4,7 @@ export class Properties {
   width: Unit | undefined;
   height: Unit | undefined;
   margin: MarginBox = new MarginBox();
+  boundary : Boundary = new Boundary();
   textAlign: TextAlign = TextAlign.left;
 
   constructor(init?: Partial<Properties>) {
@@ -11,14 +12,11 @@ export class Properties {
   }
 }
 
-class CalculatedProperties {
-  width: number = 0;
-  height: number = 0;
-  margin_top: number = 0;
-  margin_right: number = 0;
-  margin_bottom: number = 0;
-  margin_left: number = 0;
-  text_align: TextAlign = TextAlign.left;
+class Boundary {
+  top: Character = 0;
+  right: Character = 0;
+  bottom: Character = 0;
+  left: Character = 0;
 }
 
 export class Element {
@@ -77,12 +75,9 @@ export class TOM {
   document!: Document;
   stylesheet!: Stylesheet;
 
-  properties!: Map<Element, CalculatedProperties>;
-
   constructor(document: Document, stylesheet?: Stylesheet) {
     this.document = document;
     this.stylesheet = stylesheet || new Stylesheet();
-    this.properties = new Map();
   }
 
   layout(e: Element): void {
@@ -104,13 +99,6 @@ export class TOM {
 
   print(): void {
 
-    let init = (e: Element) => {
-      this.properties.set(e, new CalculatedProperties());
-      for (const child of e.children) init(child);
-    };
-
-    init(this.document);
-
     this.layout(this.document);
 
     for (const e of this.document.children) {
@@ -125,7 +113,9 @@ export class TOM {
       new MarginBox()
     );
 
-    let content_width = e.content.length;
+    let margin_space = <number>margin.left + <number> margin.right
+
+    let content_width = e.content.length + margin_space;
     let width = e.properties.width || 0;
 
     let content_start: { [key: string]: number } = {};

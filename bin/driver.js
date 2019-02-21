@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tom_1 = require("./tom");
 console.log("Demo:");
+const tape = "┊....╵....┊....╵....┊....╵....┊....╵....┊....╵....┊....╵....┊....╵....┊....╵....┊";
+console.log(tape);
 let document = new tom_1.Document();
 let tome = new tom_1.TOM(document);
 document.children.push(new tom_1.Element({
@@ -20,5 +22,6 @@ document.children.push(new tom_1.Element({
     properties: new tom_1.Properties({ textAlign: tom_1.TextAlign.left })
 }));
 tome.print();
+console.log(tape);
 console.log("done.");
 //# sourceMappingURL=driver.js.map

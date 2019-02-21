@@ -4,20 +4,18 @@ const typescript_optional_1 = require("typescript-optional");
 class Properties {
     constructor(init) {
         this.margin = new MarginBox();
+        this.boundary = new Boundary();
         this.textAlign = TextAlign.left;
         Object.assign(this, init);
     }
 }
 exports.Properties = Properties;
-class CalculatedProperties {
+class Boundary {
     constructor() {
-        this.width = 0;
-        this.height = 0;
-        this.margin_top = 0;
-        this.margin_right = 0;
-        this.margin_bottom = 0;
-        this.margin_left = 0;
-        this.text_align = TextAlign.left;
+        this.top = 0;
+        this.right = 0;
+        this.bottom = 0;
+        this.left = 0;
     }
 }
 class Element {
@@ -76,7 +74,6 @@ class TOM {
     constructor(document, stylesheet) {
         this.document = document;
         this.stylesheet = stylesheet || new Stylesheet();
-        this.properties = new Map();
     }
     layout(e) {
         this.pushDown(e.properties, e.children, "width");
@@ -90,12 +87,6 @@ class TOM {
         }
     }
     print() {
-        let init = (e) => {
-            this.properties.set(e, new CalculatedProperties());
-            for (const child of e.children)
-                init(child);
-        };
-        init(this.document);
         this.layout(this.document);
         for (const e of this.document.children) {
             console.log(this.render(e));
@@ -104,7 +95,8 @@ class TOM {
     render(e) {
         let buffer = [];
         let margin = typescript_optional_1.Optional.ofNullable(e.properties.margin).orElse(new MarginBox());
-        let content_width = e.content.length;
+        let margin_space = margin.left + margin.right;
+        let content_width = e.content.length + margin_space;
         let width = e.properties.width || 0;
         let content_start = {};
         content_start[TextAlign.left] = 0;
