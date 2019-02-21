@@ -2,9 +2,9 @@
 
 
 
-= Terminal document Model Object
+= Terminal document Object Model
 
-The Terminal document Model Object (TOM) is an experiment to get `html` and `css` _like_ output for the terminal, or other plaintext streams.
+The Terminal document Object Model (TOM) is an experiment to get `html` and `css` _like_ output for the terminal, or other plaintext streams.
 
 .Example output of the library
 image::resources/example1.png[]
