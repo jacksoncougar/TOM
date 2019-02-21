@@ -107,11 +107,11 @@ class TOM {
         content_start[TextAlign.right] = display_width.valueOf() - content_width;
         const align = typescript_optional_1.Optional.ofNullable(e.properties.textAlign);
         let amount = content_start[align.orElseGet(() => TextAlign.left)];
-        buffer.push(this.fill(margin.left, "░"));
-        buffer.push(this.fill(amount, "▒"));
+        buffer.push(this.fill(margin.left, "\x1b[46m \x1b[0m"));
+        buffer.push(this.fill(amount, "\x1b[46m▒\x1b[0m"));
         buffer.push(e.content);
-        buffer.push(this.fill(display_width.valueOf() - content_width - amount, "▒"));
-        buffer.push(this.fill(margin.right, "░"));
+        buffer.push(this.fill(display_width.valueOf() - content_width - amount, "\x1b[31m▓\x1b[0m"));
+        buffer.push(this.fill(margin.right, "\x1b[41m \x1b[0m"));
         return buffer.join("");
     }
     fill(amount, value) {

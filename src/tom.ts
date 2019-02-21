@@ -129,13 +129,13 @@ export class TOM {
     const align = Optional.ofNullable(e.properties.textAlign);
     let amount = content_start[align.orElseGet(() => TextAlign.left)];
 
-    buffer.push(this.fill(<number>margin.left, "░"));
-    buffer.push(this.fill(amount, "▒"));
+    buffer.push(this.fill(<number>margin.left, "\x1b[46m \x1b[0m"));
+    buffer.push(this.fill(amount, "\x1b[46m▒\x1b[0m"));
     buffer.push(e.content);
     buffer.push(
-      this.fill(display_width.valueOf() - content_width - amount, "▒")
+      this.fill(display_width.valueOf() - content_width - amount, "\x1b[31m▓\x1b[0m")
     );
-    buffer.push(this.fill(<number>margin.right, "░"));
+    buffer.push(this.fill(<number>margin.right, "\x1b[41m \x1b[0m"));
 
     return buffer.join("");
   }
