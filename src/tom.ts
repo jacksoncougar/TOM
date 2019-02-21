@@ -120,41 +120,86 @@ export class TOM {
         .map($ => $.valueOf())
         .orElse(0) - margin_space;
 
-    let content_start: { [key: string]: number } = {};
-    content_start[TextAlign.left] = 0;
-    content_start[TextAlign.center] =
-      display_width.valueOf() / 2 - content_width / 2;
-    content_start[TextAlign.right] = display_width.valueOf() - content_width;
-
+    
     let parts = [];
     if (content_width > display_width) {
-      let index = display_width;
-      while (e.content[index--].match(/^( )$/)) {}
 
-      parts.push(e.content.substring(0, index));
-      parts.push(e.content.substring(index));
+      // let index = display_width;
+      // while (e.content[index--].match(/^( )$/)) {}
+
+      // parts.push(e.content.substring(0, index));
+      // parts.push(e.content.substring(index));
+
+      let matches = e.content.match(new RegExp(`.{1,${display_width - 1}} ` , 'g'));
+      if(matches)
+      for(const match of matches)
+      parts.push(match);
+
     } else {
       parts.push(e.content);
     }
 
+    
+    const debug = false;
+    const left_margin_character = debug ? '\x1b[46m \x1b[0m':  ' ';
+    const left_spacing_character =  debug ? '\x1b[46m▒\x1b[0m' : ' ';
+    const right_spacing_character = debug ?  '\x1b[31m▓\x1b[0m' : ' ';
+    const right_margin_character =  debug ? '\x1b[41m \x1b[0m' : ' ';
+    const top_margin_character =  debug ? '\x1b[43m \x1b[0m' : ' ';
+    const bottom_margin_character =  debug ? '\x1b[42m \x1b[0m' : ' ';
+    
+
+    if(margin.top > 0)
+    {
+      buffer.push(this.fill(display_width + margin_space,top_margin_character));
+      buffer.push('\n');
+    }
+
     for (const part of parts) {
+
+    
+      let content_start = this.spacing(display_width, part);
+  
+    
       const align = Optional.ofNullable(e.properties.textAlign);
       let amount = content_start[align.orElseGet(() => TextAlign.left)];
 
-      buffer.push(this.fill(<number>margin.left, "\x1b[46m \x1b[0m"));
-      buffer.push(this.fill(amount, "\x1b[46m▒\x1b[0m"));
+
+      buffer.push(this.fill(<number>margin.left, left_margin_character));
+      buffer.push(this.fill(amount, left_spacing_character));
       buffer.push(part);
       buffer.push(
         this.fill(
-          display_width.valueOf() - content_width - amount,
-          "\x1b[31m▓\x1b[0m"
+          display_width.valueOf() - part.length - amount,
+          right_spacing_character
         )
       );
-      buffer.push(this.fill(<number>margin.right, "\x1b[41m \x1b[0m"));
+      buffer.push(this.fill(<number>margin.right, right_margin_character));
     
       buffer.push('\n');
     }
-    return buffer.join("");
+    buffer.pop();
+    
+    if(margin.bottom > 0)
+    {
+      buffer.push('\n');
+      buffer.push(this.fill(display_width + margin_space,bottom_margin_character));
+    }
+
+    let output = buffer.join("");
+
+    return output;
+  }
+
+  private spacing(display_width: number, part: string) : {[key: string]: number} {
+    let content_start: {
+      [key: string]: number;
+    } = {};
+    content_start[TextAlign.left] = 0;
+    content_start[TextAlign.center] =
+      display_width.valueOf() / 2 - Math.ceil(part.length / 2);
+    content_start[TextAlign.right] = display_width.valueOf() - part.length;
+    return content_start;
   }
 
   fill(amount: number, value?: string) {
