@@ -23,7 +23,7 @@ let document = new tom_1.Document();
 document.properties.width = document_width;
 const tape = new Tape(document_width).value;
 console.log(tape);
-let tome = new tom_1.TOM(document, undefined, false);
+let tome = new tom_1.TOM(document, undefined, true);
 document.push(new tom_1.Element({
     content: "Ipsum enim ipsum culpa culpa Lorem ullamco do laborum ullamco quis labore ex. Non minim incididunt ipsum elit dolor fugiat est pariatur officia. Irure nostrud cillum irure et ut. Amet pariatur magna ipsum reprehenderit culpa ea duis do. Enim occaecat elit esse laborum quis ad.",
     properties: new tom_1.Properties({

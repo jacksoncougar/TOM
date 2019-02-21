@@ -34,3 +34,9 @@ text-align:: { `left`, `center`, `right` }
 `ch`:: character absolute units
 `%`:: percent relative units
 `?`:: inherited units
+
+== Debugging
+
+Version 1 supports a `debug` flag for rendering the padding and alignment characters with `ansi escape-sequence` colours.
+
+image::debug-example.png[]

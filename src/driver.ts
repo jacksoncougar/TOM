@@ -42,7 +42,7 @@ document.properties.width = document_width;
 const tape = new Tape(document_width).value;
 console.log(tape);
 
-let tome = new TOM(document, undefined, false);
+let tome = new TOM(document, undefined, true);
 
 document.push(
   new Element({
